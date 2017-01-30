@@ -178,6 +178,10 @@
         \end{figure}
         
         \subsection[egOneSample]{Multivariate Hypothesis Testing with Excel Tool}
+        \begin{figure}[!tbh]      
+        	\includegraphics[width=\linewidth, keepaspectratio=true]{img/TsquareSheetAfterPaste_markup}
+        	\vspace{-25pt}\centering{}\protect\caption{Tsquare sheet: initial setup.}\label{fig:corkboringinitialsetup}
+        \end{figure}
         
         
         Many hypotheses about the differences of \emph{correlated} variables can be tested using Hotelling's $T^2$ statistic. The $T^2$ statistic is a multivariate generalization of Student's $t$ statistic. It takes a quadratic form and its sampling distribution is linked to the $F$-distribution \citep{hotelling1931Tsq}:
@@ -208,25 +212,16 @@
         \subsubsection{Example: Bark deposit from 4 directions of the trunk of 28 Oak trees.}
         
         \cite{rao1948corkboring} exhibited a dataset containing measurements of the weights of  cork borings taken from 4 directions on the trunk of 28 Oak trees. The hypothesis of interest was that the deposit is uniform in the North--South directions and also uniform but \emph{less} in the East--West directions. The dataset is registered under name "Cork borings" on the \shtData sheet. As before, a copy is pasted to the \shtPivot sheet for any preprocessing and initial exploration. Then a further copy for analysis is pasted to the \shtTsquare sheet by double-clicking the green paste button placed at the top-left cornor of each sheet. The initial setup should appear as Figure \ref{fig:corkboringinitialsetup}. The analysis is carried out in the following steps.
-        \begin{figure}[!tbh]      
-        	\includegraphics[width=\linewidth, keepaspectratio=true]{img/TsquareSheetAfterPaste_markup}
-        	\vspace{-25pt}\centering{}\protect\caption{Tsquare sheet: initial setup.}\label{fig:corkboringinitialsetup}
-        \end{figure}
-        
         \begin{enumerate}
-                
-                
-                
                 \item Perform the following three steps exactly: Select cells \texttt{Tsquare!B3:E3} | press \texttt{y} on the keyboard | Windows user: press \texttt{ctrl} + \texttt{Enter} on the keyboard; Mac user: Press \texttt{command} + \texttt{Enter}. By doing these steps, you have entered 4 ``y"s simultaneously.
                 
                 
                 
                 We start with testing the univariate null hypothesis $H_0: N = S$. The following step computes the p-value $=0.5740$ in cell \texttt{Tsquare!N2} for the test and the null hypothesis is accepted.
                 \item Enter $-1$ in cell \texttt{Tsquare!D39} such that the first row of the matrix of our linear transform becomes $(1,0,-1,0)$. Enter 1 in cell \texttt{Tsquare!G2} to indicate we use only the first row of the transformation matrix. The \shtTsquare sheet should now appear as Figure \ref{fig:Tsquare_N=S}.
-                
-                \begin{figure}[!tbh]
-                        \includegraphics[width=\linewidth,keepaspectratio=true]{img/TsquareSheetOutput_markup}
-                        \vspace{-25pt}\centering\protect\caption{Tsquare sheet: Testing $H_0: N = S$}\label{fig:Tsquare_N=S}
+                \begin{figure}[tbh]
+                	\includegraphics[width=\linewidth,keepaspectratio=true]{img/TsquareSheetOutput_markup}
+                	\vspace{-25pt}\centering\protect\caption{Tsquare sheet: Testing $H_0: N = S$}\label{fig:Tsquare_N=S}
                 \end{figure}
                 
                 
@@ -281,36 +276,30 @@
         
         
         \subsection[egPCA]{Principal Component Analysis}
-        Men's track data.
-        \begin{enumerate}
-          \item Locate the dataset under name ``Men" on the \shtData sheet using dropdown menu at cell \texttt{Data!A2} and copy it to clipboard
-          \begin{center}
-            \vspace{-20pt}\includegraphics[height=200pt, keepaspectratio=true]{DataSheet_Men_png}
-          \end{center}
-          \item Activate the \shtPivot sheet and directly double-click the top-left green cell \texttt{Pivot!A1} to make a copy of the dataset and equip it with the Excel table format.
-          \item Activate the \shtPCA sheet and directly double-click the top-left green cell \texttt{PCA!A1} to copy the data over.
-          \begin{center}
-            \vspace{-20pt}\includegraphics[width=\linewidth, keepaspectratio=true]{PCASheetAfterPaste_png}
-          \end{center}
-          \item Perform the following 3 steps exactly: Select cells \texttt{PCA!C3:J3} | press \texttt{x} on the keyboard | Windows user: press \texttt{ctrl} + \texttt{Enter} on the keyboard; Mac user: Press \texttt{command} + \texttt{Enter}. By doing these steps, you have entered 8 ``x"s simultaneously.
-        \end{enumerate}
-        The \shtPCA sheet should now appear as
-        \begin{center}
-          \vspace{-20pt}\includegraphics[width=\linewidth,keepaspectratio=true]{PCASheetOutput_png}
-        \end{center}
-        The main purpose of principal component analysis is dimension reduction and, if one assumes multivariate normality of data, de-correlation as a side effect. The \shtPCA sheet implements principal component analysis with the multivariate normality assumption. Under the assumption, PCA amounts to eigen-decomposition of the covariance matrix because the eigenvectors give the principal axes of the elliptic contour of the data. The longest principal axis is the linear direction on which the data projects to maximum variance. The second longest principal axis gives the next maximum-variance linear direction, and so on.
-        The covariance matrix is always real-symmetric and have a set of orthogonal eigenvectors with positive eigenvalues. The eigenvalues have the interpretation as the variance of the multivariate data along the corresponding eigenvector direction.
-        There is a subjective decision to make about whether studentization of data is needed. PCA on studentized data is equivalent to eigen-decomposition of the correlation matrix. The main issue is whether one wants to retain variance ratios among the observed variables. This certainly depends on the context. Ratios among some original variables may have established interpretations and hence would be preferred to retain. In other cases, for example, one is preparing the independent variables going into the right-hand side of a regression formula, one might want to studentize the data as the regression coefficients can recover such ratio. In middle cases, a properly estimated convex combination between the two matrices might be considered.
+        The main purpose of principal component analysis is dimension reduction and, if one assumes multivariate normality of data, de-correlation as a side effect. The \shtPCA sheet implements principal component analysis with the multivariate normality assumption. Under the assumption, PCA amounts to eigen-decomposition of the covariance matrix because the eigenvectors give the principal axes of the elliptic contour of the data: $$\Sigma = S\Lambda S^\intercal$$ where $\Lambda$ is the covariance matrix which is always real-symmetric and have a set of orthogonal eigenvectors (the columns of $S$) with positive eigenvalues (the diagonal elements of $\Lambda$). The eigen-decomposition is computed by the method of power iteration (Sauer). The longest principal axis is the linear direction on which the data projects to maximum variance. The second longest principal axis gives the next maximum-variance linear direction, and so on. The eigenvalues have the interpretation as the variance of the multivariate data along the corresponding eigenvector direction.
+        
+        There is a subjective decision on whether studentization of data is needed. PCA on studentized data is equivalent to eigen-decomposition of the correlation matrix. The main issue is whether one wants to retain variance ratios among the observed variables. This certainly depends on the context. Ratios among some original variables may have established interpretations and hence would be preferred to retain. In other cases, for example, one is preparing the independent variables going into the right-hand side of a regression formula, one might want to studentize the data as the regression coefficients can recover such ratio. In middle cases, a properly estimated convex combination between the two matrices might be considered.
         Following are some further details regarding implementation.
         \begin{enumerate}
-          \item PCA on correlation matrix do not add back the mean vector because if we do that we must also multiply back the s.d. But we don't want to do that because the s.d. is now unity for studentized data. This reflects that PCA on correlation matrix focuses on the angular difference between coordinates and ignores the radial differences.
-          \item PCA on covariance matrix may add back the mean vector. The PCA on multivariate normal sample is essentially doing a rotation of the sample space about the mean vector, not the origin. To carry out that rotation via a rotation matrix, we need to first remove the mean before applying the rotation matrix formed by the eigenvectors, and may or may not add the mean vector back.
-          \item PCA is essentially a data orthogonalization routine and does not model the mean vector. It can be used to orthogonalize the covariates for regression if prediction is the main goal and interpretation of the new covariates' meaning is not a concern. A more important purpose is dimension reduction. Those eigenvectors with a tiny eigenvalue indicate insufficient information in those trailing dimensions and hence could be removed to avoid over-fitting.
+        	\item PCA on correlation matrix do not add back the mean vector because if we do that we must also multiply back the s.d. But we don't want to do that because the s.d. is now unity for studentized data. This reflects that PCA on correlation matrix focuses on the angular difference between coordinates and ignores the radial differences.
+        	\item PCA on covariance matrix may add back the mean vector. The PCA on multivariate normal sample is essentially doing a rotation of the sample space about the mean vector, not the origin. To carry out that rotation via a rotation matrix, we need to first remove the mean before applying the rotation matrix formed by the eigenvectors, and may or may not add the mean vector back.
+        	\item PCA is essentially a data orthogonalization routine and does not model the mean vector. It can be used to orthogonalize the covariates for regression if prediction is the main goal and interpretation of the new covariates' meaning is not a concern. A more important purpose is dimension reduction. Those eigenvectors with a tiny eigenvalue indicate insufficient information in those trailing dimensions and hence could be removed to avoid over-fitting.
         \end{enumerate}
         Note that the original definition of PCA is to be a method seeking the linear directions on which data projects with maximum variance. With this definition, it is not restricted to multivariate normal data but is applicable under any sampling assumption by proper techniques. Nonetheless, if we can assume multivariate normality, the computation becomes much easier.
         
-        
-        
+        In the rest of this section, we perform a principal component analysis of the Men's track data stored under the name ``Men" on the \shtData sheet. As before, we copy this raw data table, paste it to the \shtPivot sheet, switch to the \shtPCA sheet and double-click on the top-left green button with text ``Paste from Pivot". The \shtPCA sheet should appear as Figure \ref{fig:PCA sheet initialization}.
+        \begin{figure}[!tbh]
+        	\includegraphics[width=\linewidth, keepaspectratio=true]{PCASheetAfterPaste_png}
+        	\vspace{-20pt}\centering{}\protect\caption{The ``PCA" sheet: initialization.}\label{fig:PCA sheet initialization}
+        \end{figure}
+        \begin{enumerate}
+          \item Perform the following 3 steps exactly: Select cells \texttt{PCA!C3:J3} | press \texttt{x} on the keyboard | Windows user: press \texttt{ctrl} + \texttt{Enter} on the keyboard; Mac user: Press \texttt{command} + \texttt{Enter}. By doing these steps, you have entered 8 ``x"s simultaneously.
+        \end{enumerate}
+        The \shtPCA sheet should now appear as
+        \begin{figure}[!tbh]
+          \vspace{-10pt}\includegraphics[width=\linewidth,keepaspectratio=true]{PCASheetOutput_png}
+          \vspace{-20pt}\centering{}\protect\caption{The ``PCA" sheet is refreshed every time an \texttt{x} is typed to select a data column.}
+        \end{figure}
         
         
         \subsection[egCCA]{Correlation Analysis with Excel Tool}
@@ -338,13 +327,13 @@
         \end{figure}
         The full correlation matrix including the original dataset and the constructed canonical variates is displayed in range starting at cell \texttt{CanCorr!AY3}.
         \begin{center}
-          \vspace{-20pt}\includegraphics[width=\linewidth, keepaspectratio=true]{img/CanCorrSheetFullCorrel}
+          \vspace{-10pt}\includegraphics[width=\linewidth, keepaspectratio=true]{img/CanCorrSheetFullCorrel}
         \end{center}
         The fact that each V-canonical variate only respond to one of the W-canonical variates means that if we run a regression of all V's on all W's, then we know it is merely a bunch of 1-to-1 simple linear regression performed together.
         
         Finally, the first two rows implements some hypothesis tests to determine how many canonical variates should be retained if dimension reduction is a concern.
         \begin{center}
-          \vspace{-20pt}\includegraphics[width=\linewidth, keepaspectratio=true]{img/CanCorrSheetHypothesisTests}
+          \vspace{-10pt}\includegraphics[width=\linewidth, keepaspectratio=true]{img/CanCorrSheetHypothesisTests}
         \end{center}
         
         
@@ -375,12 +364,12 @@
           \item Locate the dataset under name ``Olympic88" on the \shtData sheet using dropdown menu at cell \texttt{Data!RegisteredList} and copy it to clipboard.
           \begin{center}
             \includegraphics[height=200pt, keepaspectratio=true]{img/DataSheet_Olympic88_Selector}\\
-            \vspace{-20pt}\includegraphics[height=200pt, keepaspectratio=true]{img/DataSheet_Olympic88_Data}
+            \includegraphics[height=200pt, keepaspectratio=true]{img/DataSheet_Olympic88_Data}
           \end{center}
           \item Activate the \shtPivot sheet and directly double-click the top-left green cell \texttt{Pivot!A1} to make a copy of the dataset and equip it with the Excel table format.
           \item Activate the \shtFactor sheet and directly double-click the top-left green cell \texttt{Factor!A1} to copy the data over.
           \begin{center}
-            \vspace{-20pt}\includegraphics[width=\linewidth, keepaspectratio=true]{img/FactorSheetAfterPaste}
+            \vspace{-10pt}\includegraphics[width=\linewidth, keepaspectratio=true]{img/FactorSheetAfterPaste}
           \end{center}
           \item Perform the following 3 steps exactly: Select cells \texttt{Factor!C3:L3} | press \texttt{x} on the keyboard | Windows user: press \texttt{ctrl} + \texttt{Enter} on the keyboard; Mac user: Press \texttt{command} + \texttt{Enter}. By doing these steps, you have entered 10 ``x"s simultaneously.
         \end{enumerate}
