@@ -16,3 +16,18 @@ while chg > 1e-15
 end
 eigval = median((cov * eigvec) ./ eigvec)
 eigvec
+
+[Q,R] = qr(cov)
+R = zeros(nrow);
+Q = cov;
+for j = 1:nrow
+    y = cov(:,j);
+    for i = 1:(j-1)
+        R(i,j) =  sum(Q(:,i) .* y);
+        y = y - R(i,j) .* Q(:,i);
+    end
+    R(j,j) = norm(y);
+    Q(:,j) = y ./ R(j,j);
+end
+R
+Q

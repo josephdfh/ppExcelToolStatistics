@@ -4,7 +4,7 @@ Option Explicit
 Function MatEigenvalue_max(A, Optional maxIter As Integer = 20)
 On Error GoTo e
   If TypeName(A) = "Range" Then A = A.Value2
-  Dim nrow&, ncol&, L1norm#, i&, itercount As Integer
+  Dim nrow&, ncol&, L1norm#, i&, itercount As Integer, eigval#
   nrow = UBound(A) - LBound(A) + 1
   ncol = UBound(A, 1) - LBound(A, 1) + 1
   If nrow <> ncol Then GoTo e
@@ -20,6 +20,7 @@ On Error GoTo e
   While chg > tol And itercount < maxIter
     eigvec_old = eigvec
     eigvec = Application.MMult(eigvec, Application.Transpose(A))
+    eigval = Application.SumProduct(eigvec, eigvec_old)  'Rayleigh
     L1norm = Sqr(Application.SumSq(eigvec))
     For i = LBound(eigvec) To UBound(eigvec)
       eigvec(i) = eigvec(i) / L1norm
@@ -32,12 +33,7 @@ On Error GoTo e
     MatEigenvalue_max = "#Not converged given 20 iterations in MatEigenvalue_max"
     Exit Function
   End If
-  Dim eigval#, ans
-  ans = Application.MMult(eigvec, Application.Transpose(A))
-  For i = 0 To (UBound(eigvec) - LBound(eigvec))
-    ans(LBound(ans) + i) = ans(LBound(ans) + i) / eigvec(LBound(eigvec) + i)
-  Next i
-  MatEigenvalue_max = Application.Median(ans)
+  MatEigenvalue_max = eigval
   Exit Function
 e: MatEigenvalue_max = "#Error in MatEigenvalue_max"
 End Function
