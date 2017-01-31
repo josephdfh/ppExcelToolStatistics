@@ -115,10 +115,9 @@ Private Sub generate_Normal()
   cov.Value2 = covval
   
   Dim eigval As Range: Set eigval = shtRand.Range("DistPar2").Offset(1, d + 4).Resize(d, 1)
-  eigval.FormulaArray = "=CovEigenDecompQR(" & cov.AddressLocal & ")"
+  eigval.Resize(d, d + 2).FormulaArray = "=CovEigenDecompQR(" & cov.AddressLocal & ",,,,True)"
   
   Dim eigvec As Range: Set eigvec = shtRand.Range("DistPar2").Offset(1, d + 6).Resize(d, d)
-  eigvec.FormulaArray = "=MatEigenvector(" & cov.AddressLocal & ", " & eigval.AddressLocal & ")"
   
   Dim pc As Range: Set pc = eigvec.Cells(1, 1).Offset(d + 2, 0).Resize(n, d)
   pc.FormulaArray = "=NORMSINV(RAND()) * TRANSPOSE(SQRT(" & eigval.AddressLocal & "))"
