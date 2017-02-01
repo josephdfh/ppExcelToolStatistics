@@ -11,7 +11,7 @@
 \usepackage{amsbsy}
 \usepackage{amstext}
 \usepackage{amssymb}
-
+\numberwithin{equation}{subsection}
 
 \newcommand{\shtData}{``Data" (\includegraphics[height=8pt, keepaspectratio=true]{DataSheetTab_png}) }
 \newcommand{\shtRand}{``Rand" (\includegraphics[height=8pt, keepaspectratio=true]{RandSheetTab_png}) }
@@ -169,8 +169,9 @@
         \end{enumerate}
         
         \subsection[egLM]{Multivariate Regression Involving Categorical Variables}
-        In a general regression setup, one frequently encounters more than one response variable and categorical variables in the regressors. The \shtLM sheet is implemented for this task. LM stands for Linear Model. The initiation step is similar as before: after the data is pasted to the \shtPivot sheet and preprocessed there, one switch to the \shtLM sheet and double-clicks the green paste-from-pivot button at the top-left corner to create a working copy of the dataset. One then specifies a \texttt{y} ahead of each response column, an \texttt{x} ahead of each continuous regressor column and a \texttt{c} ahead of each categorical regressor column. A second specification, regarding Rectangle 3 of Figure \ref{fig:LMSheetOutput_markup}, is needed to indicate which of the \texttt{x} and \texttt{c} columns will finally be used with an \texttt{x} in the cells above the Working Data. Note that the categorical variables in Rectangle 2 are auto-encoded into dummy variables of Rectangle 4 in Figure \ref{fig:LMSheetOutput_markup}. The coefficient and standard deviation estimates the multivariate regression are output in Rectangle 6.
+        In a general regression setup, one frequently encounters more than one response variable and categorical variables in the regressors. The \shtLM sheet is implemented for this task. LM stands for Linear Model. The initiation step is similar as before: after the data is pasted to the \shtPivot sheet and preprocessed there, one switch to the \shtLM sheet and double-clicks the green paste-from-pivot button at the top-left corner to create a working copy of the dataset. One then specifies a \texttt{y} ahead of each response column, an \texttt{x} ahead of each continuous regressor column and a \texttt{c} ahead of each categorical regressor column. A second specification, regarding Rectangle 3 of Figure \ref{fig:LMSheetOutput_markup}, is needed to indicate which of the \texttt{x} and \texttt{c} columns will finally be used with an \texttt{x} in the cells above the Working Data. Note that the categorical variables in Rectangle 2 are auto-encoded into dummy variables of Rectangle 4 in Figure \ref{fig:LMSheetOutput_markup}. The coefficient and standard deviation estimates of the regression are output in Rectangle 6.
         In addition to estimation of the regression coefficients, the sheet also implements Multivariate-ANOVA tests, a SAS \texttt{proc glm} code generator macro, and transformation matrices on both continuous responses and continuous regressors.
+        The orange cells in Rectangle 7 allows specifying two linear transformations of both the response variables (\texttt{y}) and the continuous regressors (\texttt{x}) and then running the regression on the linearly transformed data.
         \begin{figure}[!tbh]
                 \centering
                 \includegraphics[width=\linewidth, keepaspectratio=true]{img/LMSheetOutput_markup}
@@ -259,7 +260,7 @@
                 
         \end{enumerate}
         
-        Now we see that the covariance is elongated along the positive sloped direction, making it possible that the mean vector (\texttt{0.857142857, 0.928571429}), displayed at range \texttt{Tsquare!L5:L6}, has a smaller Mahalanobis distance from the center than both its projections on the two standard basis coordinates. This should be understood in common-sense language that the two hypotheses corroborate each other. The data has indicated that it is more natural to have $N=S$ and $E=W$ happening together than separately, and it is rather strange to observe uniformity in only one of the directions but not in the other. The corroboration effect would not have been captured had we been testing only univariate procedures.
+        Now we see that the covariance is elongated along the positive sloped direction, making it possible that the mean vector (\texttt{0.857142857, 0.928571429}), displayed at range \texttt{Tsquare!L5:L6}, has a smaller Mahalanobis distance from the center than both its projections on the two standard basis coordinates. This is a version of the Stein paradox (\cite{SteinCM1956InadmissibilityoftheUsualEstima}, Casella and Hwang). In the case here it can be understood as that the two hypotheses mutually corroborate. The data has indicated that it is more natural to have $N=S$ and $E=W$ happening together than separately; it is rather strange to observe uniformity in only one of the directions but not in the other. The corroboration effect would not have been captured had we been testing only univariate procedures.
         
         
         To test that the $E-W$ direction is less uniform than the $N-S$ direction, we use the linear combination $(N-S)-(E-W)$ and the null hypothesis that the two directions are equally uniform so that linear combination has zero mean under the null. On the \shtTsquare sheet, we change back to use only the 1st row of the transform matrix by setting \texttt{Tsquare!G2} to 1 and enter $(1,-1,-1,1)$ as the 1st row at \texttt{Tsquare!B39:E39}. The test result accepts the null with an even bigger p-value=0.9714 (\texttt{Tsqaure!N2}). Looking into the data, we do find a number of points where the difference between $N-S$ is greater than that between $E-W$.
@@ -277,16 +278,16 @@
         
         \subsection[egPCA]{Principal Component Analysis}
         The main purpose of principal component analysis is dimension reduction and, if one assumes multivariate normality of data, de-correlation as a side effect. The \shtPCA sheet implements principal component analysis with the multivariate normality assumption.        
-        We demonstrate its usage by performing a principal component analysis of the Men's track sports data stored under the name ``Men" on the \shtData sheet. As before, we copy this raw data table, paste it to the \shtPivot sheet, switch to the \shtPCA sheet and double-click on the top-left green button with text ``Paste from Pivot". The actual PCA computation is event-triggered in the same fashion as seen before on the \shtCorrel sheet: whenever an \texttt{x} is put above a data column, the entire sheet is refreshed to display new PCA results. The computation is very fast so one barely notice any delay. The dataset has 8 numerical columns, to enter 8 \texttt{x}s simultaneously: Select cells \texttt{PCA!C3:J3} | press \texttt{x} on the keyboard | Windows user: press \texttt{ctrl} + \texttt{Enter} on the keyboard; Mac user: Press \texttt{command} + \texttt{Enter}. The \shtPCA sheet should appear as Figure \ref{fig:PCA sheet computed} where the only inputs required are marked by Rectangles 1, 2, a, b, and d while the rest are generated content.
+        We demonstrate its usage with the Men's track sports data stored under the name ``Men" on the \shtData sheet. As before, we copy this raw data table, paste it to the \shtPivot sheet, switch to the \shtPCA sheet and double-click on the top-left green button with text ``Paste from Pivot". The actual PCA computation is event-triggered in the same fashion as seen before on the \shtCorrel sheet: whenever an \texttt{x} is put above a data column, the entire sheet is regenerated to display a new set of PCA results. The computation is very fast so one barely notice any delay. The ``Men" dataset has 8 numerical columns; to enter 8 \texttt{x}'s simultaneously: Select cells \texttt{PCA!C3:J3} | press \texttt{x} on the keyboard | Windows user: press \texttt{ctrl} + \texttt{Enter} on the keyboard; Mac user: Press \texttt{command} + \texttt{Enter}. The \shtPCA sheet should appear as Figure \ref{fig:PCA sheet computed} where the only inputs required are marked by Rectangles 1, 2, a, b, and d while the rest are generated content.
         \begin{figure}[!tbh]
         	\includegraphics[width=\linewidth, keepaspectratio=true]{img/PCASheetComputed_markup}
         	\vspace{-20pt}\centering{}\protect\caption{The ``PCA" sheet.}\label{fig:PCA sheet computed}
         \end{figure}
         
-        Rectangles 3 and 7 display the covariance and correlation matrices. These are the starting point of two branches of computation. 
-        Rectangle 4 displays the eigenvalues and the corresponding eigenvectors of the covariance matrix (Rectangle 3) computed by the formula $$\texttt{=CovEigenDecompQR(Cov)}$$ calling the underlying \proglang{VBA} function. It returns as the first row the eigenvalues, followed by a blank row followed by a matrix consisted of the eigenvectors as its columns. The full signature of the function is \texttt{Function CovEigenDecompQR(A, Optional maxiter = 1000, Optional eigvec,  Optional eigval, Optional returnColumnBound As Boolean = False)}. The second argument specifies the maximum iterations allowed before returning. The third and fourth arguments are call-back arguments that can be used to return the eigenvalues and eigenvector matrix in separate variables rather than the glued-together return value of the function, the fifth argument specifies whether the eigenvalues should be a row put on top of the eigenvector matrix (\texttt{False}) or a column on the left of it (\texttt{True}).
+        Rectangles 3 and 7 display the covariance and correlation matrices. These are the starting points of two branches of computation. 
+        Rectangle 4 displays the eigenvalues and the corresponding eigenvectors of the covariance matrix (Rectangle 3) computed by the formula $$\texttt{=CovEigenDecompQR(Cov)}$$ calling the underlying \proglang{VBA} function. It returns as the first row the eigenvalues, followed by a blank row followed by a matrix consisted of the eigenvectors as its columns. The full signature of the function is \texttt{Function CovEigenDecompQR(A, Optional maxiter = 1000, Optional eigvec,  Optional eigval, Optional returnColumnBound As Boolean = False)}. The second argument specifies the maximum iterations allowed before returning. The third and fourth arguments are call-back arguments that can be used to return the eigenvalues and eigenvector matrix in separate variables rather than the glued-together return value of the function. The fifth argument specifies whether the eigenvalues should be a row put on top of the eigenvector matrix (\texttt{False}) or a column on the left of it (\texttt{True}).
         Rectangle 5 displays the mean and sd of the orthogonal columns of Rectangle 6. The mean is fixed at the original mean vector.
-        The table of Rectangle 6 holds the principle components constructed for the original data, using formula $$\xi  = \left( {X - \bar X} \right)Q + \bar X$$ where $\bar X$ is the mean vector in Rectangle 5 and $Q$ is the eigenvector matrix in Rectangle 4. The same computation is repeated to produce Rectangle 9 from the Correlation matrix in Rectangle 7. 
+        The table of Rectangle 6 holds the principle components constructed for the original data, using the affine transformation $$\xi  = \left( {X - \bar X} \right)Q + \bar X$$ where $\bar X$ is the mean vector in Rectangle 5 and $Q$ is the eigenvector matrix in Rectangle 4. The same computation is repeated to produce Rectangle 9 from the Correlation matrix in Rectangle 7. 
         
         We next analyze $m$, the cut-off number of PCs to use as the ``compressed" dataset. We demonstrate such analysis for Rectangle 9 which is constructed from the studentized data. Figure \ref{fig:Determining the cut-off number} (upper) plots the eigenvalues in Rectangle 8 and suggests retaining three PCs as they visually account for a high proportion of the total variance.    
         \begin{figure}[!tbh]
@@ -297,48 +298,60 @@
         The top region of the \shtPCA sheet implements a number of hypotheses tests (Figure \ref{fig:Determining the cut-off number} (lower)) to quantitatively determine $m$ and confirm the visual check.         
         After entering $m=3$ in the first orange cell of Rectangle b, the other cells show that the 3rd PC accounts for $2.8\%$ of total variance, the smallest $p-m$ PCs account for an expected $g(\lambda)=5\%$ and maximum $7\%$ at $95\%$ confidence of total variance. Rectangle c tests whether the remaining $p-m$ eigenvalues are all equal while Rectangle d constructs a confidence interval for the third eigenvalue.
         
-        \subsubsection{Discussion}Under the data normality assumption, PCA amounts to eigen-decomposition of the covariance matrix because the eigenvectors give the principal axes of the elliptic contour of the data: $$\Sigma = S\Lambda S^\intercal$$ where $\Lambda$ is the covariance matrix which is always real-symmetric and have a set of orthogonal eigenvectors (the columns of $S$) with positive eigenvalues (the diagonal elements of $\Lambda$). The eigen-decomposition is computed by the method of power iteration extended with QR-decomposition to output all eigenvalues and eigenvectors at once. The QR-decomposition is computed by the \proglang{VBA} function \texttt{QR} with the signature \texttt{Function QR(A, Optional Q = Null, Optional R)}. The function returns the two matrices Q and R vertically stacked with a blank row separating in between. They can also be returned in separate variables using the second and third argument as callback variables. In the current software, the \texttt{QR} function is mainly consumed by the \texttt{CovEigenDecompQR} function. The latter function manages the power iteration. For details of the algorithm, see \cite{GolubVanLoan2012MatrixComputations4e}, \cite{SauerT2011NumericalAnalysis2e}. Since eigen-decomposition of the covariance matrix is an important computation at the center of a few methods implemented in the current software, we still mention an outline of the algorithm:
+        \subsubsection{Discussion}Under the data normality assumption, PCA amounts to eigen-decomposition of the covariance matrix because the eigenvectors give the principal axes of the elliptic contour of the data: 
+        \begin{align}
+        \begin{split}
+        \Sigma &= S\Lambda S^\intercal \\
+        \Lambda &= S^\intercal \Sigma S 
+        \end{split}
+        \end{align}
+        where $\Lambda$ is the covariance matrix which is always real-symmetric and have a set of orthogonal eigenvectors (the columns of $S$) with positive eigenvalues (the diagonal elements of $\Lambda$). The eigen-decomposition is computed by the method of power iteration extended with QR-decomposition to output all eigenvalues and eigenvectors at once. The QR-decomposition is computed by the \proglang{VBA} function \texttt{QR} with the signature \texttt{Function QR(A, Optional Q = Null, Optional R)}. The function returns the two matrices Q and R vertically stacked with a blank row separating in between. They can also be returned in separate variables using the second and third argument as callback variables. In the current software, the \texttt{QR} function is mainly consumed by the \texttt{CovEigenDecompQR} function. The latter function manages the power iteration. For details of the algorithm, see \cite{GolubVanLoan2012MatrixComputations4e}, \cite{SauerT2011NumericalAnalysis2e}. Since eigen-decomposition of the covariance matrix is an important computation at the center of a few methods implemented in the current software, we still mention an outline of the algorithm:
         
         The longest principal axis is the linear direction on which the data projects to maximum variance. The second longest principal axis gives the next maximum-variance linear direction, and so on. The eigenvalues have the interpretation as the variance of the multivariate data along the corresponding eigenvector direction.
         
         There is a subjective decision on whether studentization of data is needed. PCA on studentized data is equivalent to eigen-decomposition of the correlation matrix. The main issue is whether it is desirable to retain variance ratios among the observed variables. This certainly depends on the context. Ratios among some original variables may have established interpretations and hence would be preferred to retain. In other cases, for example, one is preparing the independent variables going into the right-hand side of a regression formula, one might want to studentize the data as the regression coefficients can recover such ratio. In middle cases, a properly estimated convex combination between the two matrices might be considered.
         Following are some further details regarding implementation.
         \begin{enumerate}
-                \item PCA on correlation matrix do not add back the mean vector because if we do that we must also multiply back the s.d. But we don't want to do that because the s.d. is now unity for studentized data. This reflects that PCA on correlation matrix focuses on the angular difference between coordinates and ignores the radial differences.
-                \item PCA on covariance matrix may add back the mean vector. The PCA on multivariate normal sample is essentially doing a rotation of the sample space about the mean vector, not the origin. To carry out that rotation via a rotation matrix, we need to first remove the mean before applying the rotation matrix formed by the eigenvectors, and may or may not add the mean vector back.
+                \item PCA on correlation matrix need not add back the mean vector because of the data is assumed to have been studentized. This reflects that PCA on correlation matrix focuses on the angular difference between coordinates and ignores the radial differences.
+                \item PCA on covariance matrix adds back the mean vector. The PCA on multivariate normal sample is essentially doing a rotation of the sample space about the mean vector, not the origin. To perform that rotation via a rotation matrix, we need to first remove the mean before applying the rotation matrix formed by the eigenvectors, and may or may not add the mean vector back---we chose to add it back.
                 \item PCA is essentially a data orthogonalization routine and does not model the mean vector. It can be used to orthogonalize the covariates for regression if prediction is the main goal and interpretation of the new covariates' meaning is not a concern. A more important purpose is dimension reduction. Those eigenvectors with a tiny eigenvalue indicate insufficient information in those trailing dimensions and hence could be removed to avoid over-fitting.
         \end{enumerate}
         Note that the original definition of PCA is to be a method seeking the linear directions on which data projects with maximum variance. With this definition, it is not restricted to multivariate normal data but is applicable under any sampling assumption by proper techniques. Nonetheless, if we can assume multivariate normality, the computation becomes much easier.
-        \subsection[egCCA]{Correlation Analysis with Excel Tool}
-        We use Salespeople Data to demonstrate canonical correlation analysis following \cite{anderson2003introMVA3e} The raw data can be located with name ``Salespeople" on the \shtData sheet 
-            \begin{center}
-              \includegraphics[height=200pt, keepaspectratio=true]{img/DataSheet_Salespeople}
-              \vspace{-20pt}\includegraphics[height=200pt, keepaspectratio=true]{img/DataSheet_Salespeople2}
-            \end{center}
-        As before, the raw data should be copied first to the \shtPivot sheet, and then brought to the \shtCanCorr sheet using the green paste-from-pivot double-click button. We will investigate the correlation structure between the 3 performance variables and the 4 skill variables. To indicate grouping, we put a letter \texttt{v} ahead each column of a performance variable and a letter \texttt{w} ahead each column of a skill variable. The \shtCanCorr sheet should now appear as
-        \begin{center}
-          \vspace{-20pt}\includegraphics[width=\linewidth,keepaspectratio=true]{img/CanCorrSheetOutput}
-        \end{center}
-        The overall idea of Canonical Correlation \cite{hotelling1936relations} Analysis is to construct a scalar ``correlation measure" $r$ to describe linear association between two vectors of multivariate random variables $\textbf{v}\in\mathbb{R}^p$ and $\textbf{w}\in\mathbb{R}^q$. The scalar is constructed by finding in each space a unit directional vector such that the usual unsigned correlation (geometrically the cosine of the angle) between the two directional vectors are maximal. The derivation of the pair of optimal directional vectors happens to become eigenvalue problems for two positive semi-definite matrices. The two matrices happen to share the a same set of non-zero eigenvalues and the largest eigenvalue is the square ``correlation" measure being sought. Moreover, the eigenvectors corresponding to the largest eigenvalue for each matrix is the unit vector in the respective space.
-        \[\begin{gathered}
-        r^2\textbf{v}  = \textbf{S}_{vv}^{ - 1}{\textbf{S}_{vw}}\textbf{S}_{ww}^{ - 1}{\textbf{S}_{wv}}\textbf{v}  \hfill \\
-        r^2\textbf{w} = \textbf{S}_{ww}^{ - 1}{\textbf{S}_{wv}}\textbf{S}_{vv}^{ - 1}{\textbf{S}_{vw}}\textbf{w}  \hfill \\ 
-        \end{gathered} \]
-        \begin{center}
-          \vspace{-20pt}\includegraphics[width=\linewidth, keepaspectratio=true]{CanCorrSheetExplain_png}
-        \end{center}
-        For the second-largest eigenvalue, it is the squared canonical correlation between the spaces $\alpha^\bot\subset\mathbb{R}^{p-1}$ and $\beta^\bot\subset\mathbb{R}^{q-1}$, the orthogonal complement spaces of the two directional vectors, and recursively so doing for the other smaller non-zero eigenvalues. Note that the ``QuadProd" matrices are real symmetric, this means that the eigenvectors are perpendicular to each other. Together with the ``maximal correlation" property, the eigenvectors can be used to re-coordinate the data columns, as done in range starting at cell \texttt{CanCorr!AG4} and \texttt{CanCorr!AP4}. Figure \ref{fig:CanCorrSheetCanCorrVariates} shows first a few rows of re-coordinated data.
-        \begin{figure}[!tbh]
-          \includegraphics[width=\linewidth, keepaspectratio=true]{img/CanCorrSheetCanCorrVariates}
-          \vspace{-20pt}\centering{}\protect\caption{Canonical Variates}\label{fig:CanCorrSheetCanCorrVariates}
-        \end{figure}
-        The full correlation matrix including the original dataset and the constructed canonical variates is displayed in range starting at cell \texttt{CanCorr!AY3}.
-        \begin{center}
-          \vspace{-10pt}\includegraphics[width=\linewidth, keepaspectratio=true]{img/CanCorrSheetFullCorrel}
-        \end{center}
-        The fact that each V-canonical variate only respond to one of the W-canonical variates means that if we run a regression of all V's on all W's, then we know it is merely a bunch of 1-to-1 simple linear regression performed together.
         
-        Finally, the first two rows implements some hypothesis tests to determine how many canonical variates should be retained if dimension reduction is a concern.
+        \subsection[egCCA]{Correlation Analysis with Excel Tool}
+        The overall idea of Canonical Correlation Analysis \citep{hotelling1936relations} is to construct a scalar correlation measure $r$, called the canonical correlation, that describes linear association between two vectors of multivariate random variables $\textbf{v}\in\mathbb{R}^p$ and $\textbf{w}\in\mathbb{R}^q$. We demonstrate canonical correlation analysis following \cite{anderson2003introMVA3e} with the ``Salespeople" dataset registered on the \shtData sheet under the same name. The ``Salespeople" dataset collects 7 covariates per person that can be grouped into two sets. The first 3 variables measure sales performance scores; the rest 4 variables measure general intellectual tendencies of the person.
+        
+        As before, the raw data should be copied first to the \shtPivot sheet, and then brought to the \shtCanCorr sheet using the green paste-from-pivot double-click button. We will investigate the correlation structure between the 3 performance variables and the 4 skill variables. To indicate grouping, we put a letter \texttt{v} ahead each column of a performance variable and a letter \texttt{w} ahead each column of a skill variable. The \shtCanCorr sheet should now appear as Figure \ref{fig:The CanCorr sheet}. As in the \shtPCA sheet, each time an \texttt{v} or \texttt{w} is typed, the whole sheet is regenerated to show a new set of results. The analysis is also branched into one based on the original data and the other based on the studentized data.
+        \begin{figure}[!tbh]
+        	\includegraphics[width=\linewidth,keepaspectratio=true]{img/CanCorrSheetOutput}
+        	\vspace{-20pt}\centering{}\protect\caption{The ``CanCorr" sheet.}\label{fig:The CanCorr sheet}
+        \end{figure}
+        
+        The canonical correlation is constructed by finding in each space a unit directional vector such that the usual unsigned correlation (geometrically the cosine of the angle) between the two directional vectors are maximal. The derivation of the pair of optimal directional vectors shows the problem can be recast as the eigenvalue problems for two positive semi-definite matrices, which are computed in the current software by the \proglang{VBA} function \texttt{CovEigenDecompQR}. Figure \ref{fig:Cancorr quadprod} shows the formula in which the eigenvalue equations (\ref{eqn:cancorr eqn}) are coded.
+        \begin{align}\label{eqn:cancorr eqn}
+        \begin{split}
+        r^2\textbf{v}  &= \textbf{S}_{vv}^{ - 1}{\textbf{S}_{vw}}\textbf{S}_{ww}^{ - 1}{\textbf{S}_{wv}}\textbf{v} \\
+        r^2\textbf{w} &= \textbf{S}_{ww}^{ - 1}{\textbf{S}_{wv}}\textbf{S}_{vv}^{ - 1}{\textbf{S}_{vw}}\textbf{w}
+        \end{split}
+        \end{align}
+        It can be shown that the two matrices share the a same set of non-zero eigenvalues and the largest eigenvalue is the squared canonical correlation being sought. The eigenvectors corresponding to the largest eigenvalue for each matrix is a unit vector in each space.
+        \begin{figure}[!tbh]
+          \includegraphics[width=400pt, keepaspectratio=true]{CanCorrSheetExplain_png}
+          \vspace{-20pt}\centering{}\protect\caption{Coding the canonical correlation equations (\ref{eqn:cancorr eqn}).}\label{fig:Cancorr quadprod}
+        \end{figure}
+        For the second-largest eigenvalue, it is the squared canonical correlation between the orthogonal complement spaces $\alpha^\bot\subset\mathbb{R}^{p-1}$ and $\beta^\bot\subset\mathbb{R}^{q-1}$ of the two directional vectors, and recursively so constructing the other smaller non-zero eigenvalues. Note that the ``QuadProd" matrices are real symmetric, this means that the eigenvectors are perpendicular to each other. Together with the ``maximal correlation" property, the eigenvectors can be used to re-coordinate the data columns, as done in range starting at cell \texttt{CanCorr!AG4} and \texttt{CanCorr!AP4}. Figure \ref{fig:CanCorrSheetCanCorrVariates} shows first a few rows of re-coordinated data. 
+        \begin{figure}[!tbh]
+        	\includegraphics[width=\linewidth, keepaspectratio=true]{img/CanCorrSheetCanCorrVariates}
+        	\vspace{-20pt}\centering{}\protect\caption{Canonical Variates}\label{fig:CanCorrSheetCanCorrVariates}
+        \end{figure}
+        \begin{figure}[!tbh]
+        	\includegraphics[width=\linewidth, keepaspectratio=true]{img/CanCorrSheetFullCorrel}
+        	\vspace{-20pt}\centering{}\protect\caption{Full correlation matrix among the original and the canonical variates stylized.}\label{fig:cancorr full correlation matrix}
+        \end{figure}
+        The full correlation matrix including the original dataset and the constructed canonical variates is displayed in range starting at cell \texttt{CanCorr!AY3}, shown as Figure \ref{fig:cancorr full correlation matrix}. This full correlation matrix has only one version as it is invariant to studentization of the input data. 
+        
+        The fact that each V-canonical variate only respond to one of the W-canonical variates means that if we run a regression of all V's on all W's, then we know it is merely a bunch of 1-to-1 simple linear regression performed together.
+        Finally, the first two rows implements some hypothesis tests for determining the cut-off number of canonical variates to retain should dimension reduction be a concern.
         \begin{center}
           \vspace{-10pt}\includegraphics[width=\linewidth, keepaspectratio=true]{img/CanCorrSheetHypothesisTests}
         \end{center}
@@ -351,41 +364,43 @@
         When all observed variable are used and the residuals are still not spherical, one ponders over the existence of latent factors. The factor model is formulated as
         $$y  - \mu = \Lambda F + \varepsilon$$
         where $F$ is a multivariate normal vector that can be required to satisfy 
-        $${\mathop{\rm var}} \left( F \right) = I$$
-        and $\varepsilon$ is the new residual that is hopefully more spherical than before. The coefficient matrix $\Lambda$ is called the factor loadings. Both $F$ and $\Lambda$ will need to be estimated. A further simplifying assumption makes $\Lambda$ constant so that
-        $${\mathop{\rm var}} \left( {\Lambda F} \right) = \Lambda {\Lambda ^\intercal}$$
+        $${\mathop{\rm var}} \left( F \right) = I.$$
+        It plays the equivalent role of the observed $x$-variables in a usual regression model. The $\varepsilon$ is the new residual that is hopefully more spherical than before. The coefficient matrix $\Lambda$ is called the factor loadings; it plays the equivalent role of the $\beta$ coefficients in a usual regression model. Both $F$ and $\Lambda$ will need to be estimated. A further simplifying assumption makes $\Lambda$ constant so that
+        \begin{equation}\label{eq:common covariance}
+	        {\mathop{\rm var}} \left( {\Lambda F} \right) = \Lambda {\Lambda ^\intercal}
+        \end{equation}
         hence
-        $${\mathop{\rm var}} (y - \mu ) = \Lambda {\Lambda ^\intercal} + {\mathop{\rm var}} \left( \varepsilon  \right).$$
+        \begin{equation}
+	        {\mathop{\rm var}} (y - \mu ) = \Lambda {\Lambda ^\intercal} + {\mathop{\rm var}} \left( \varepsilon  \right).
+        \end{equation}
         This suggests expanding the real-symmetric left-hand side by eigen-decomposition
-        \[{\mathop{\rm var}} (y - \mu ) = {\lambda _1}{v_1}v_1^\intercal + {\lambda _2}{v_2}v_2^\intercal +  \cdots  + {\lambda _p}{v_p}v_p^\intercal\]
-        and estimating $\Lambda {\Lambda ^\intercal}$ by first $m$ terms of this summation. This is the method implemented in the Excel tool.
-        After $\Lambda$, the factor loadings matrix, is estimated, one then proceed to estimate $F$ by, for example, least square. In the Excel tool, we follow \cite{anderson2003introMVA3e} to implement the weighted least square method of \cite{bartlett1938}
-        \[\hat F = {\left( {{\Lambda ^\intercal}{\Psi ^{ - 1}}\Lambda } \right)^{ - 1}}{\Lambda ^\intercal}{\Psi ^{ - 1}}z\]
-        and the conditional expectation method of \cite{Thomson1951}
-        \[\hat F = {\Lambda ^\intercal}{\left( {\Lambda {\Lambda ^\intercal} + \Psi } \right)^{ - 1}}z = {\left( {I + {\Lambda ^\intercal}\Psi \Lambda } \right)^{ - 1}}{\Lambda ^\intercal}{\Psi ^{ - 1}}z.\]
-        In the following example, we analyze the olympic88 men decathlon data using factor analysis. The dataset doesn't contain any covariants, making it suitable to demonstrate the latent factor approach.
+        \begin{equation}
+	        {\mathop{\rm var}} (y - \mu ) = {\lambda _1}{v_1}v_1^\intercal + {\lambda _2}{v_2}v_2^\intercal +  \cdots  + {\lambda _p}{v_p}v_p^\intercal
+        \end{equation}
+        and estimating $\Lambda {\Lambda ^\intercal}$ by first $m$ terms of this summation 
+        \begin{equation}\label{eq:loading matrix}
+        \hat\Lambda = V_m D_m^{\frac{1}{2}}
+        \end{equation}
+        where $V_m$ is an $m$-column matrix binding together the vectors $v_1, \ldots, v_m$ and $D_m^\frac{1}{2}$ is a square diagonal matrix holding the square-rooted eigenvalues $\sqrt{\lambda_1}, \ldots, \sqrt{\lambda_m}$.
+        This is the method implemented in the current software. The eigen-decomposition is computed by the \proglang{VBA} function \texttt{CovEigenDecompQR}.
         
-        1988 Summer Olympics Men's Decathlon data. 
-        %Background: \texttt{https://en.wikipedia.org/wiki/Athletics\_at\_the\_1988_Summer_Olympics_\%E2\%80\%93_Men's_decathlon}
-        \begin{enumerate}
-          \item Locate the dataset under name ``Olympic88" on the \shtData sheet using dropdown menu at cell \texttt{Data!RegisteredList} and copy it to clipboard.
-          \begin{center}
-            \includegraphics[height=200pt, keepaspectratio=true]{img/DataSheet_Olympic88_Selector}\\
-            \includegraphics[height=200pt, keepaspectratio=true]{img/DataSheet_Olympic88_Data}
-          \end{center}
-          \item Activate the \shtPivot sheet and directly double-click the top-left green cell \texttt{Pivot!A1} to make a copy of the dataset and equip it with the Excel table format.
-          \item Activate the \shtFactor sheet and directly double-click the top-left green cell \texttt{Factor!A1} to copy the data over.
-          \begin{center}
-            \vspace{-10pt}\includegraphics[width=\linewidth, keepaspectratio=true]{img/FactorSheetAfterPaste}
-          \end{center}
-          \item Perform the following 3 steps exactly: Select cells \texttt{Factor!C3:L3} | press \texttt{x} on the keyboard | Windows user: press \texttt{ctrl} + \texttt{Enter} on the keyboard; Mac user: Press \texttt{command} + \texttt{Enter}. By doing these steps, you have entered 10 ``x"s simultaneously.
-        \end{enumerate}
-        The \shtFactor sheet should now appear as Figure \ref*{fig:FactorSheetOutput_markup}. The heat-mapped regions on the right are 6 factor scores from different scoring methods and whether the input data has been studentized.
+        After the factor loadings matrix is estimated, we proceed to estimate $F$ by, for example, least square. In the current software, we follow \cite{anderson2003introMVA3e} to implement the weighted least square method of \cite{bartlett1938}, denoting by $\hat{\Psi}$ the estimate of $\textrm{var}(\varepsilon)$,
+        \begin{equation}\label{eq:bartlett factor score}
+	        \hat F = {\left( {{\hat\Lambda ^\intercal}{\hat\Psi ^{ - 1}}\hat\Lambda} \right)^{ - 1}}{\hat\Lambda ^\intercal}{\hat\Psi ^{ - 1}}z
+	    \end{equation}
+        and the conditional expectation method of \cite{Thomson1951},
+        \begin{align}\label{eq:thomson factor score}
+	        \hat F = {\hat\Lambda ^\intercal}{\left( {\hat\Lambda {\hat\Lambda ^\intercal} + \hat\Psi } \right)^{ - 1}}z = {\left( {I + {\hat\Lambda ^\intercal}\hat\Psi \hat\Lambda } \right)^{ - 1}}{\hat\Lambda ^\intercal}{\hat\Psi ^{ - 1}}z.
+	    \end{align}
+        In the following example, we analyze the 1988 Olympic men's decathlon results data, found under name ``Olympic88" on the \shtData sheet, using factor analysis. The dataset doesn't contain any predicting covariates such as atheletes' physical measurements or results taken at an earlier time, making it suitable to demonstrate the latent factor approach. The background of the data can be found at \url{https://en.wikipedia.org/wiki/Athletics\_at\_the\_1988_Summer_Olympics_\%E2\%80\%93_Men's_decathlon}.
+        
+        As before, we copy the  ``Olympic88" raw data table on the \shtData sheet, paste it to the \shtPivot sheet, switch to the \shtFactor sheet and double-click on the top-left green button with text ``Paste from Pivot". The actual computation for Factor analysis is event-triggered in the same fashion as seen before. There are two branches of computations done the original and studentized data. After entering 10 \texttt{x}'s ahead of every results columns, the \shtFactor sheet should now appear as Figure \ref*{fig:FactorSheetOutput_markup}.
         \begin{figure}[!tbh]
           \includegraphics[width=\linewidth,keepaspectratio=true]{img/FactorSheetOutput_markup}
           \vspace{-20pt}\centering{}\protect\caption{Output from the Factor Analysis sheet}\label{fig:FactorSheetOutput_markup}
         \end{figure}
-
+        
+        The computation for Factor analysis based on studentized data starts with Rectangle 1 where the correlation matrix is placed. Rectangle 2 computes the eigenvalues and eigenvectors for the correlation matrix. Rectangle 3 shows the $m$-column loading matrix estimate according to Eq(\ref{eq:loading matrix}). The number $m$ is specified in the Rectangle m. Rectangle 4 computes the common covariance estimate (\ref{eq:common covariance}). Rectangle 5 computes the specific covariance estimate $\hat{\Psi} = S-\hat{\Lambda}\hat{\Lambda}^\intercal$. The heat-mapped Rectangles 6 and 7 compute the latent factors by (\ref{eq:bartlett factor score}) and (\ref{eq:thomson factor score}) for both the original and the studentized data.
         
         \section[data]{Storing Data}
         The data import/export of the tool is delegated to Excel's own data i/o utilities. The user can add a blank sheet to import the dataset from various original sources. Next, all datasets need to be transformed into the \textit{data frame} format, i.e., a matrix of data with column header texts. A row in the data frame is a multivariate sample vector jointly observed for all the variables and a column is a univariate sample observed repeatedly for a single variable. The number of rows in the data frame is the sample size. This format should be familiar to both \texttt{SAS} (sas7bdat) and \proglang{R} (data frame) users. 
