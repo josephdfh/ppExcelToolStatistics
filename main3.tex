@@ -213,7 +213,7 @@
         	\includegraphics[width=\linewidth, keepaspectratio=true]{img/TsquareSheetAfterPaste_markup}
         	\vspace{-25pt}\centering{}\protect\caption{Tsquare sheet: initial setup.}\label{fig:corkboringinitialsetup}
         \end{figure}
-        \begin{figure}[tbh]
+        \begin{figure}[!tbh]
         	\includegraphics[width=0.49\linewidth,keepaspectratio=true]{img/TsquareSheetOutput_markup}
         	\includegraphics[width=0.49\linewidth,keepaspectratio=true]{img/TsquareSheetOutput2_markup}
         	\includegraphics[width=0.49\linewidth,keepaspectratio=true]{img/TsquareSheetOutput3_markup}
@@ -226,17 +226,16 @@
         \begin{enumerate}
                 \item Perform the following three steps exactly: Select cells \texttt{Tsquare!B3:E3} | press \texttt{y} on the keyboard | Windows user: press \texttt{ctrl} + \texttt{Enter} on the keyboard; Mac user: Press \texttt{command} + \texttt{Enter}. By doing these steps, you have entered 4 ``y"s simultaneously.
                 
-                We start with testing the univariate null hypothesis $H_0: N = S$. The following step computes the p-value $=0.5740$ in cell \texttt{Tsquare!N2} for the test and the null hypothesis is accepted.
-                \item Enter $-1$ in cell \texttt{Tsquare!D39} such that the first row of the matrix of our linear transform becomes $(1,0,-1,0)$. Enter 1 in cell \texttt{Tsquare!G2} to indicate we use only the first row of the transformation matrix. The \shtTsquare sheet should now appear as the upper-left view in Figure \ref{fig:Tsquare sheet: Hypotheses}.
+                \item We start with testing the univariate null hypothesis $H_0: N = S$. The following step computes the p-value $=0.5740$ in cell \texttt{Tsquare!N2} for the test and the null hypothesis is accepted.
                 
-                Next we test the another univariate hypothesis $H_0: E = W$. The following step results in a p-value=0.6310 and therefore the null hypothesis is accepted.
+                Enter $-1$ in cell \texttt{Tsquare!D39} such that the first row of the matrix of our linear transform becomes $(1,0,-1,0)$. Enter 1 in cell \texttt{Tsquare!G2} to indicate we use only the first row of the transformation matrix. The \shtTsquare sheet should now appear as the upper-left view in Figure \ref{fig:Tsquare sheet: Hypotheses}.
                 
-                \item Modify the first row of the transformation matrix near \texttt{Tsquare!B39:E39} into $(0,1,0,-1)$. The \shtTsquare sheet should now appear as the upper-right view in Figure \ref{fig:Tsquare sheet: Hypotheses}.
+               \item Next we test the another univariate hypothesis $H_0: E = W$ by simply modifying the first row of the transformation matrix near \texttt{Tsquare!B39:E39} into $(0,1,0,-1)$. The \shtTsquare sheet should now appear as the upper-right view in Figure \ref{fig:Tsquare sheet: Hypotheses}. This results in a p-value=0.6310 and therefore the null hypothesis is accepted.
                 
                 
-                Next we test the two hypotheses jointly: $H_0: N=S$ and $E=W$. The following step results in an increased p-value=0.8194 and therefore null hypothesis accepted.
+                \item Next we test the two hypotheses jointly: $H_0: N=S$ and $E=W$. The following step results in an increased p-value=0.8194 and therefore null hypothesis accepted.
                 
-                \item Change \texttt{Tsquare!G2} to 2 and modify the first 2 rows of the transformation matrix near \texttt{Tsquare!B39:E40} into 
+                Change \texttt{Tsquare!G2} to 2 and modify the first 2 rows of the transformation matrix near \texttt{Tsquare!B39:E40} into 
                 \[\left[ {\begin{array}{*{20}{c}}
                         1&0&-1&0 \\ 
                         0&1&0&-1
@@ -248,20 +247,20 @@
                 \item To understand why the p-value has increased in the previous step, we plot the covariance matrix of the transformed data. Now perform the following steps: copy \texttt{L14:M15}, the covariance of the transformed data (\texttt{Ty1, Ty2}), switch to the \shtCovCorrel sheet, double-click on the wide green cell \texttt{Cov2Correl!A3}, double-click on the orange cell \texttt{Cov2Correl!Q1}, follow the instruction on the popup to pick the covariance range at \texttt{Cov2Correl!B4:C5} and click done. Figure \ref{fig:Cov2Correl_PlotCov} should appear on the \shtCovCorrel sheet now.
                 
                 \begin{figure}[!tbh]
-                        \includegraphics[width=100pt,keepaspectratio=true]{img/Cov2Correl_PlotCov}
+                        \includegraphics[width=90pt,keepaspectratio=true]{img/Cov2Correl_PlotCov}
                         \vspace{-10pt}\centering\protect\caption{Cov2Correl sheet: Covariance plot of the transformed responses.}\label{fig:Cov2Correl_PlotCov}
                 \end{figure}
                 
+        
+                Now we see that the covariance is elongated along the positive sloped direction, making it possible that the mean vector (\texttt{0.857142857, 0.928571429}), displayed at range \texttt{Tsquare!L5:L6}, has a smaller Mahalanobis distance from the center than both its projections on the two standard basis coordinates. This is a version of the Stein paradox (\cite{SteinCM1956InadmissibilityoftheUsualEstima}, \cite{CasellaHwang2012}). In the case here it can be understood as that the two hypotheses mutually corroborate. The data has indicated that it is more natural to have $N=S$ and $E=W$ happening together than separately; it is rather strange to observe uniformity in only one of the directions but not in the other. The corroboration effect would not have been captured had we been testing only univariate procedures.
+                
+                
+                \item To test that the $E-W$ direction is less uniform than the $N-S$ direction, we use the linear combination $(N-S)-(E-W)$ and the null hypothesis that the two directions are equally uniform so that linear combination has zero mean under the null. On the \shtTsquare sheet, we change back to use only the 1st row of the transform matrix by setting \texttt{Tsquare!G2} to 1 and enter $(1,-1,-1,1)$ as the 1st row at \texttt{Tsquare!B39:E39}. The \shtTsquare sheet should now appear as the lower-right view in Figure \ref{fig:Tsquare sheet: Hypotheses}. The test result accepts the null with an even bigger p-value=0.9714 (\texttt{Tsqaure!N2}). Looking into the data, we do find a number of points where the difference between $N-S$ is greater than that between $E-W$.
+                
+                
+                Note because $(1,-1,-1,1) = (1,0,-1,0) - (0,1,0,-1)$, therefore we cannot test all three hypotheses in one transformation as that would create a singular covariance matrix for the transformed data and then no $T^2$ statistic could be constructed.
+        
         \end{enumerate}
-        
-        Now we see that the covariance is elongated along the positive sloped direction, making it possible that the mean vector (\texttt{0.857142857, 0.928571429}), displayed at range \texttt{Tsquare!L5:L6}, has a smaller Mahalanobis distance from the center than both its projections on the two standard basis coordinates. This is a version of the Stein paradox (\cite{SteinCM1956InadmissibilityoftheUsualEstima}, Casella and Hwang). In the case here it can be understood as that the two hypotheses mutually corroborate. The data has indicated that it is more natural to have $N=S$ and $E=W$ happening together than separately; it is rather strange to observe uniformity in only one of the directions but not in the other. The corroboration effect would not have been captured had we been testing only univariate procedures.
-        
-        
-        To test that the $E-W$ direction is less uniform than the $N-S$ direction, we use the linear combination $(N-S)-(E-W)$ and the null hypothesis that the two directions are equally uniform so that linear combination has zero mean under the null. On the \shtTsquare sheet, we change back to use only the 1st row of the transform matrix by setting \texttt{Tsquare!G2} to 1 and enter $(1,-1,-1,1)$ as the 1st row at \texttt{Tsquare!B39:E39}. The \shtTsquare sheet should now appear as the lower-right view in Figure \ref{fig:Tsquare sheet: Hypotheses}. The test result accepts the null with an even bigger p-value=0.9714 (\texttt{Tsqaure!N2}). Looking into the data, we do find a number of points where the difference between $N-S$ is greater than that between $E-W$.
-        
-        
-        Note because $(1,-1,-1,1) = (1,0,-1,0) - (0,1,0,-1)$, therefore we cannot test all three hypotheses in one transformation as that would create a singular covariance matrix for the transformed data and then no $T^2$ statistic could be constructed.
-        
         
         
         
@@ -341,14 +340,10 @@
         Figure \ref{fig:cancorr full correlation matrix} shows the full correlation matrix including the original dataset and the constructed canonical variates is displayed in range starting at cell \texttt{CanCorr!AY3}. This full correlation matrix has only one version as it is invariant to studentization of the input data. 
         
         The fact that each V-canonical variate only respond to one of the W-canonical variates means that if we run a regression of all V's on all W's, then we know it is merely a bunch of 1-to-1 simple linear regression performed together.
-        Finally, the first two rows implements some hypothesis tests for determining the cut-off number of canonical variates to retain should dimension reduction be a concern.
+        Finally, the first two rows implements a hypothesis test for determining the cut-off number $k$ of canonical variates to retain, should dimension reduction be a concern, such that the association between the two sets of variables is sufficiently preserved. It constructs a Wilk's $\Lambda$ statistic to test whether the discarding variates all have zero canonical correlations with their unique counterparts in the opposite set. The sampling distribution of the Wilk's $\Lambda$ can be approximated by either an $F$ distribution or a $\chi^2$ distribution.
         \begin{center}
-          \vspace{-10pt}\includegraphics[width=\linewidth, keepaspectratio=true]{img/CanCorrSheetHypothesisTests}
+          \vspace{-10pt}\includegraphics[width=\linewidth, keepaspectratio=true]{img/CanCorrSheetHypothesisTests_markup}
         \end{center}
-        
-        
-        
-        
         
         \subsection[egFactor]{Factor Analysis with Excel Tool}
         When all observed variable are used and the residuals are still not spherical, one ponders over the existence of latent factors. The factor model is formulated as
@@ -382,17 +377,17 @@
         \begin{align}\label{eq:thomson factor score}
 	        \hat F = {\hat\Lambda ^\intercal}{\left( {\hat\Lambda {\hat\Lambda ^\intercal} + \hat\Psi } \right)^{ - 1}}z = {\left( {I + {\hat\Lambda ^\intercal}\hat\Psi \hat\Lambda } \right)^{ - 1}}{\hat\Lambda ^\intercal}{\hat\Psi ^{ - 1}}z.
 	    \end{align}
-        In the following example, we analyze the 1988 Olympic men's decathlon results data, found under name ``Olympic88" on the \shtData sheet, using factor analysis. The dataset doesn't contain any predicting covariates such as atheletes' physical measurements or results taken at an earlier time, making it suitable to demonstrate the latent factor approach. The background of the data can be found at \url{https://en.wikipedia.org/wiki/Athletics\_at\_the\_1988_Summer_Olympics_\%E2\%80\%93_Men's_decathlon}.
-        
-        As before, we copy the  ``Olympic88" raw data table on the \shtData sheet, paste it to the \shtPivot sheet, switch to the \shtFactor sheet and double-click on the top-left green button with text ``Paste from Pivot". The actual computation for Factor analysis is event-triggered in the same fashion as seen before. There are two branches of computations done the original and studentized data. After entering 10 \texttt{x}'s ahead of every results columns, the \shtFactor sheet should now appear as Figure \ref*{fig:FactorSheetOutput_markup}.
+        In the following example, we analyze the 1988 Olympic men's decathlon results data, found under name ``Olympic88" on the \shtData sheet, using factor analysis. The dataset doesn't contain any predicting covariates such as atheletes' physical measurements or results taken at an earlier time, making it suitable to demonstrate the latent factor approach.
         \begin{figure}[!tbh]
-          \includegraphics[width=\linewidth,keepaspectratio=true]{img/FactorSheetOutput_markup}
-          \vspace{-20pt}\centering{}\protect\caption{Output from the Factor Analysis sheet}\label{fig:FactorSheetOutput_markup}
+                \includegraphics[width=\linewidth,keepaspectratio=true]{img/FactorSheetOutput_markup}
+                \vspace{-20pt}\centering{}\protect\caption{Output from the Factor Analysis sheet}\label{fig:FactorSheetOutput_markup}
         \end{figure}
         
-        The computation for Factor analysis based on studentized data starts with Rectangle 1 where the correlation matrix is placed. Rectangle 2 computes the eigenvalues and eigenvectors for the correlation matrix. Rectangle 3 shows the $m$-column loading matrix estimate according to Eq(\ref{eq:loading matrix}). The number $m$ is specified in the Rectangle m. Rectangle 4 computes the common covariance estimate (\ref{eq:common covariance}). Rectangle 5 computes the specific covariance estimate $\hat{\Psi} = S-\hat{\Lambda}\hat{\Lambda}^\intercal$. The heat-mapped Rectangles 6 and 7 compute the latent factors by (\ref{eq:bartlett factor score}) and (\ref{eq:thomson factor score}) for both the original and the studentized data.
+        As before, we copy the  ``Olympic88" raw data table on the \shtData sheet, paste it to the \shtPivot sheet, switch to the \shtFactor sheet and double-click on the top-left green button with text ``Paste from Pivot". The actual computation for Factor analysis is event-triggered in the same fashion as seen before. There are two branches of computations done the original and studentized data. After entering 10 \texttt{x}'s ahead of every results columns, the \shtFactor sheet should now appear as Figure \ref*{fig:FactorSheetOutput_markup}.
         
-        \section[data]{Storing Data and Examples of \shtRand and \shtPivot}
+        The computation for Factor analysis based on studentized data starts with Rectangle 3 where the correlation matrix is placed. Rectangle 4 computes the eigenvalues and eigenvectors for the correlation matrix. Rectangle 5 shows the $m$-column loading matrix estimate according to Eq(\ref{eq:loading matrix}). The number $m$ is specified in the Rectangle m. Rectangle 6 computes the common covariance estimate (\ref{eq:common covariance}). Rectangle 7 computes the specific covariance estimate $\hat{\Psi} = S-\hat{\Lambda}\hat{\Lambda}^\intercal$. The heat-mapped Rectangles 8 compute the latent factors by (\ref{eq:bartlett factor score}) and (\ref{eq:thomson factor score}) for the studentized data. Rectangle 10 repeats the same computation for the original data, which produces the latent factors in Rectangle 9.
+        
+        \section[data]{Storing Data and Generating MVN Sample}
         The data import/export of the tool is delegated to Excel's own data i/o utilities. The user can add a blank sheet to import the dataset from various original sources. Next, all datasets need to be transformed into the \textit{data frame} format, i.e., a matrix of data with column header texts. A row in the data frame is a multivariate sample vector jointly observed for all the variables and a column is a univariate sample observed repeatedly for a single variable. The number of rows in the data frame is the sample size.
         
         After importing and transforming into the data frame format, the dataset should be registered on the sheet \shtData and archived there for future usage. The sheet \shtData can be navigated via a dropdown menu near cell \texttt{Data!A2}, which lists all registered datasets. 
@@ -434,31 +429,27 @@
         \item Double click on \texttt{Data!I1} (\includegraphics[height=16pt,keepaspectratio=true]{DataSheet_PasteFromClipboardButton_png}) to initiate pasting and registration of a new dataset
         \item Click \texttt{Yes} to confirm registration of this dataset to sheet \shtData
         \begin{center}
-	        \includegraphics[height=80pt, keepaspectratio=true]{DataSheet_ConfirmRegister_png}
+	        \vspace{-10pt}\includegraphics[height=70pt, keepaspectratio=true]{DataSheet_ConfirmRegister_png}\vspace{-10pt}
         \end{center}
         \item Enter "Random MVN 3000 x 3" to name the dataset being registered
         \begin{center}
-	        \includegraphics[height=80pt, keepaspectratio=true]{DataSheet_GiveDatasetName_png}
+	        \vspace{-10pt}\includegraphics[height=80pt, keepaspectratio=true]{DataSheet_GiveDatasetName_png}\vspace{-10pt}
         \end{center}
         \item Roll out the dropdown menu at cell \texttt{Data!A2} and look for the newly registered dataset and select it. After select, the screen will auto-navigate to the dataset and select it.
         \begin{center}
-	        \includegraphics[height=120pt, keepaspectratio=true]{DataSheet_LocateDatasetViaMenu_png}
+	        \vspace{-10pt}\includegraphics[height=120pt, keepaspectratio=true]{DataSheet_LocateDatasetViaMenu_png}\vspace{-10pt}
         \end{center}
         \item You can now press the keyboard shortcut to copy the selection to the system clipboard.
         \begin{center}
-	        \includegraphics[height=136pt,keepaspectratio=true]{DataSheet_CopyDataset_png}
+	        \vspace{-10pt}\includegraphics[height=136pt,keepaspectratio=true]{DataSheet_CopyDataset_png}\vspace{-10pt}
         \end{center}
-        \item Once the data is on the clipboard, switch to the \shtPivot sheet and immediately double-click on the top-left green button
+        \item Once the data is on the clipboard, switch to the \shtPivot sheet and immediately double-click on the top-left green button. After double-click, the dataset will be pasted to the \shtPivot sheet as an Excel table and hence it enjoys all Excel table associated utilities such as filtering with complex conditions (\proglang{SQL} select in disguise), multi-column sort, pivot table (aggregation, a bit like \proglang{R} apply), and graphics. Depending on how you configure the pivot table, \shtPivot may now appear as
         \begin{center}
-	        \includegraphics[height=42pt, keepaspectratio=true]{PivotPasteButton_png}
-        \end{center}
-        \item After double-click, the dataset will be pasted to the \shtPivot sheet as an Excel table and hence it enjoys all Excel table associated utilities such as filtering with complex conditions (\proglang{SQL} select in disguise), multi-column sort, pivot table (aggregation, a bit like \proglang{R} apply), and graphics. Depending on how you configure the pivot table, \shtPivot may now appear as
-        \begin{center}
-	        \includegraphics[width=\linewidth, keepaspectratio=true]{PivotSheetAfterPaste_png}
+	        \vspace{-15pt}\includegraphics[width=\linewidth, keepaspectratio=true]{PivotSheetAfterPaste_png}\vspace{-15pt}
         \end{center}
         \item The cell \texttt{Pivot!J1} can help you change the aggregate function to one of \texttt{Sum}, \texttt{Count}, \texttt{Average}, \texttt{Max}, \texttt{Min}, \texttt{Product}, \texttt{Count numbers}, \texttt{stddev}, \texttt{stddevp}, \texttt{var}, and \texttt{varp}. This is a quick way to get the mean vector and the sd vector.
         \begin{center}
-	        \includegraphics[width=\linewidth, keepaspectratio=true]{PivotSheetChangePivotAggregateFunc_png}
+	        \includegraphics[width=0.65\linewidth, keepaspectratio=true]{PivotSheetChangePivotAggregateFunc_png}
         \end{center}
         \item The orange button at cell \texttt{Pivot!L1} makes normal and $\chi^2$ QQ plots to help visually check marginal and joint normality. To do this, put an ``x" in cells \texttt{Pivot!A4:C4} above the column headers and then double click on the orange button. The \shtPivot sheet may now appear as
         \begin{center}
