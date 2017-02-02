@@ -78,16 +78,12 @@
         Faculty of Science\\
         University of Hong Kong\\
         Hong Kong\\
-        E-mail: \email{jdong@connect.hku.hk}\\
-        URL: \url{http://web.hku.hk/~jdong/} \\
         \\
         Guosheng Yin\\
         Department of Statistics and Actuarial Science\\
         Faculty of Science\\
         University of Hong Kong\\
-        Hong Kong\\
-        E-mail: \email{gyin@hku.hk}\\
-        URL: \url{http://web.hku.hk/~gyin/} \\
+        Hong Kong
 }
 %% It is also possible to add a telephone and fax number
 %% before the e-mail in the following format:
@@ -117,10 +113,12 @@
   
   
         The software closely follows \cite{anderson2003introMVA3e} and \cite{johnson1992applied} in choice of the methods for implementation. These include classical works of Hotelling, Fisher, and Pearson, including a multivariate version of the  $t$--test, covariance tests, canonical correlation (as a measure of association between two sets of variables), linear discrimination (as a supervised classification algorithm),  principal component (as a data orthogonalization algorithm), Factor analysis (to reduce correlation by splitting random factors of the covariance matrix), and the General Linear Model (mixture of continuous and categorical regressors predicting multivariate continuous response with multivariate ANOVA).
+        
+        The entire project including this document has been setup on github at \url{https://github.com/josephdfh/ExcelStatTool}.
   
   
         \section[example]{Examples}        
-            In this section, we explain the tool to a general readership using examples in the style of ``Introduction to Statistics with Excel Tool". We cannot cover every aspect implemented in the current software while we focus on the most important ones. We also rely on the reader to use the magnifier function came with the electronic document viewer to view those condensed figures in this section.
+            In this section, we explain the tool to a general readership using examples in the style of ``Introduction to Statistics with Excel Tool". While we focus on the most important aspects implemented in the current software we cannot cover all of them. We have to also rely on the reader to use the magnifier function came with the electronic document viewer to view those condensed figures.
                 
         \subsection[egReg]{Regression with Excel Tool}
         This first example is reserved for multiple regression for its unsaid importance among all statistical methods. 
@@ -170,97 +168,19 @@
         \end{enumerate}
         
         \subsection[egLM]{Multivariate Regression Involving Categorical Variables}
-        In a general regression setup, one frequently encounters more than one response variable and categorical variables in the regressors. The \shtLM sheet is implemented for this task. LM stands for Linear Model. The initiation step is similar as before: after the data is pasted to the \shtPivot sheet and preprocessed there, one switch to the \shtLM sheet and double-clicks the green paste-from-pivot button at the top-left corner to create a working copy of the dataset. One then specifies a \texttt{y} ahead of each response column, an \texttt{x} ahead of each continuous regressor column and a \texttt{c} ahead of each categorical regressor column. A second specification, regarding Rectangle 3 of Figure \ref{fig:LMSheetOutput_markup}, is needed to indicate which of the \texttt{x} and \texttt{c} columns will finally be used with an \texttt{x} in the cells above the Working Data. Note that the categorical variables in Rectangle 2 are auto-encoded into dummy variables of Rectangle 4 in Figure \ref{fig:LMSheetOutput_markup}. The coefficient and standard deviation estimates of the regression are output in Rectangle 6.
-        In addition to estimation of the regression coefficients, the sheet also implements Multivariate-ANOVA tests and transformation matrices on both continuous responses and continuous regressors.
+        In a general regression setup, one frequently encounters more than one response variable and categorical variables in the regressors. The \shtLM sheet is implemented for this task. LM stands for Linear Model. The initiation step is similar as before: after the data is pasted to the \shtPivot sheet and preprocessed there, one switch to the \shtLM sheet and double-clicks the green paste-from-pivot button at the top-left corner to create a working copy of the dataset. 
+        
+        One then specifies a \texttt{y} ahead of each response column, an \texttt{x} ahead of each continuous regressor column and a \texttt{c} ahead of each categorical regressor column.        
+        A second specification, regarding Rectangle 3 of Figure \ref{fig:LMSheetOutput_markup}, is needed to indicate which of the \texttt{x} and \texttt{c} columns will finally be used with an \texttt{x} in the cells above the Working Data. Note that the categorical variables in Rectangle 2 are auto-encoded into dummy variables of Rectangle 4 in Figure \ref{fig:LMSheetOutput_markup}. 
+        
+        The coefficient and standard deviation estimates of the regression are output in Rectangle 6. In addition to estimation of the regression coefficients, the sheet also implements Multivariate-ANOVA tests and transformation matrices on both continuous responses and continuous regressors.
+        
         The orange cells in Rectangle 7 allows specifying two linear transformations of both the response variables (\texttt{y}) and the continuous regressors (\texttt{x}) and then running the regression on the linearly transformed data.
         \begin{figure}[!tbh]
                 \centering
                 \includegraphics[width=\linewidth, keepaspectratio=true]{img/LMSheetOutput_markup}
                 \vspace{-20pt}\centering{}\protect\caption{Output of the Linear Model sheet}\label{fig:LMSheetOutput_markup}
         \end{figure}
-        
-        \subsection[egOneSample]{Multivariate Hypothesis Testing with Excel Tool}
-        
-        Many hypotheses about the differences of \emph{correlated} variables can be tested using Hotelling's $T^2$ statistic. The $T^2$ statistic is a multivariate generalization of Student's $t$ statistic. It takes a quadratic form and its sampling distribution is linked to the $F$-distribution \citep{hotelling1931Tsq}:
-        
-        \[n{\left( {\bar{\textbf{x}} - {\boldsymbol{\mu}}} \right)^ \intercal}{\textbf{S}^{ - 1}}\left( {\bar{\textbf{x}} - {\boldsymbol{\mu}}} \right) \sim T^2(p, n-1) = \frac{{p\left( {n - 1} \right)}}{{n - p}}F\left( {p,n - p} \right) \]
-        
-        where $\textbf{x} \in \mathbb{R}^{p\times n}$ is the data vector, 
-        $\bar{\textbf{x}} \in \mathbb{R}^p$ is the sample mean vector, 
-        $\boldsymbol{\mu} \in \mathbb{R}^p$ is the true mean vector,
-        $n$ is the sample size, and 
-        $\textbf{S}$ is the sample covariance matrix
-        \[\textbf{S} = \frac{1}{{n - 1}}\left( {\textbf{x} - \bar{\textbf{x}}{\textbf{1}^\intercal}} \right){\left( {\textbf{x} - \bar{\textbf{x}}{\textbf{1}^\intercal}} \right)^\intercal}.\]
-        
-        
-        If the sample covariance $\textbf{S}$ is replaced by the true covariance
-        $\boldsymbol{\Sigma}$ then the resulting pivotal quantity $n{\left( {\bar{\textbf{x}} - {\boldsymbol{\mu}}} \right)^ \intercal}{\boldsymbol{\Sigma}^{ - 1}}\left( {\bar{\textbf{x}} - {\boldsymbol{\mu}}} \right)$
-        is $\chi^2$-distributed.
-        Since any linear transformation of a normal random vector remains normal, the test statistic remains $T^2$. One then focuses on the design of a linear transform $C$ that represents the hypothesis of interest: 
-        
-        \[H_0: C\bar{\textbf{x}} - \boldsymbol{\xi}_0 = \textbf{0}.\]
-        
-        
-        
-        Since the design of the linear transform is essentially a process of choosing the proper basis for a re-coordinatization of data, the whole process can be intuitively understood as finding the most direct ``angle" to view the data such that the hypothesis is settled by judging whether the distance between a pair of points is too much for them to be considered the same point. We demonstrate the methodology using the classic example of \cite{rao1948corkboring} with our Excel tool.
-        
-        
-        
-        \subsubsection{Example: Bark deposit from 4 directions of the trunk of 28 Oak trees.}
-        
-        \cite{rao1948corkboring} exhibited a dataset containing measurements of the weights of  cork borings taken from 4 directions on the trunk of 28 Oak trees. The hypothesis of interest was that the deposit is uniform in the North--South directions and also uniform but \emph{less} in the East--West directions. The dataset is registered under name "Cork borings" on the \shtData sheet. As before, a copy is pasted to the \shtPivot sheet for any preprocessing and initial exploration. Then a further copy for analysis is pasted to the \shtTsquare sheet by double-clicking the green paste button placed at the top-left cornor of each sheet. The initial setup should appear as Figure \ref{fig:corkboringinitialsetup}. The analysis is carried out in the following steps.
-        \begin{figure}[!tbh]      
-        	\includegraphics[width=\linewidth, keepaspectratio=true]{img/TsquareSheetAfterPaste_markup}
-        	\vspace{-25pt}\centering{}\protect\caption{Tsquare sheet: initial setup.}\label{fig:corkboringinitialsetup}
-        \end{figure}
-        \begin{figure}[!tbh]
-        	\includegraphics[width=0.49\linewidth,keepaspectratio=true]{img/TsquareSheetOutput_markup}
-        	\includegraphics[width=0.49\linewidth,keepaspectratio=true]{img/TsquareSheetOutput2_markup}
-        	\includegraphics[width=0.49\linewidth,keepaspectratio=true]{img/TsquareSheetOutput3_markup}
-        	\includegraphics[width=0.49\linewidth,keepaspectratio=true]{img/TsquareSheetOutput4_markup}
-        	
-        	\vspace{-10pt}\centering\protect\caption{Upper-Left, $H_0: N = S$; Upper-Right, $H_0: E = W$;
-        		Lower-Left, $H_0: N = S \texttt{ and } E=W$;
-        		Lower-Right, $H_0: N-S=E-W$.}\label{fig:Tsquare sheet: Hypotheses}
-        \end{figure}
-        \begin{enumerate}
-                \item Perform the following three steps exactly: Select cells \texttt{Tsquare!B3:E3} | press \texttt{y} on the keyboard | Windows user: press \texttt{ctrl} + \texttt{Enter} on the keyboard; Mac user: Press \texttt{command} + \texttt{Enter}. By doing these steps, you have entered 4 ``y"s simultaneously.
-                
-                \item We start with testing the univariate null hypothesis $H_0: N = S$. The following step computes the p-value $=0.5740$ in cell \texttt{Tsquare!N2} for the test and the null hypothesis is accepted.
-                
-                Enter $-1$ in cell \texttt{Tsquare!D39} such that the first row of the matrix of our linear transform becomes $(1,0,-1,0)$. Enter 1 in cell \texttt{Tsquare!G2} to indicate we use only the first row of the transformation matrix. The \shtTsquare sheet should now appear as the upper-left view in Figure \ref{fig:Tsquare sheet: Hypotheses}.
-                
-               \item Next we test the another univariate hypothesis $H_0: E = W$ by simply modifying the first row of the transformation matrix near \texttt{Tsquare!B39:E39} into $(0,1,0,-1)$. The \shtTsquare sheet should now appear as the upper-right view in Figure \ref{fig:Tsquare sheet: Hypotheses}. This results in a p-value=0.6310 and therefore the null hypothesis is accepted.
-                
-                
-                \item Next we test the two hypotheses jointly: $H_0: N=S$ and $E=W$. The following step results in an increased p-value=0.8194 and therefore null hypothesis accepted.
-                
-                Change \texttt{Tsquare!G2} to 2 and modify the first 2 rows of the transformation matrix near \texttt{Tsquare!B39:E40} into 
-                \[\left[ {\begin{array}{*{20}{c}}
-                        1&0&-1&0 \\ 
-                        0&1&0&-1
-                        \end{array}} \right]\]
-                
-                
-                The \shtTsquare sheet should now appear as the lower-left view in Figure \ref{fig:Tsquare sheet: Hypotheses}.
-                
-                \item To understand why the p-value has increased in the previous step, we plot the covariance matrix of the transformed data. Now perform the following steps: copy \texttt{L14:M15}, the covariance of the transformed data (\texttt{Ty1, Ty2}), switch to the \shtCovCorrel sheet, double-click on the wide green cell \texttt{Cov2Correl!A3}, double-click on the orange cell \texttt{Cov2Correl!Q1}, follow the instruction on the popup to pick the covariance range at \texttt{Cov2Correl!B4:C5} and click done. Figure \ref{fig:Cov2Correl_PlotCov} should appear on the \shtCovCorrel sheet now.
-                
-                \begin{figure}[!tbh]
-                        \includegraphics[width=90pt,keepaspectratio=true]{img/Cov2Correl_PlotCov}
-                        \vspace{-10pt}\centering\protect\caption{Cov2Correl sheet: Covariance plot of the transformed responses.}\label{fig:Cov2Correl_PlotCov}
-                \end{figure}
-                
-        
-                Now we see that the covariance is elongated along the positive sloped direction, making it possible that the mean vector (\texttt{0.857142857, 0.928571429}), displayed at range \texttt{Tsquare!L5:L6}, has a smaller Mahalanobis distance from the center than both its projections on the two standard basis coordinates. This is a version of the Stein paradox (\cite{SteinCM1956InadmissibilityoftheUsualEstima}, \cite{CasellaHwang2012}). In the case here it can be understood as that the two hypotheses mutually corroborate. The data has indicated that it is more natural to have $N=S$ and $E=W$ happening together than separately; it is rather strange to observe uniformity in only one of the directions but not in the other. The corroboration effect would not have been captured had we been testing only univariate procedures.
-                
-                
-                \item To test that the $E-W$ direction is less uniform than the $N-S$ direction, we use the linear combination $(N-S)-(E-W)$ and the null hypothesis that the two directions are equally uniform so that linear combination has zero mean under the null. On the \shtTsquare sheet, we change back to use only the 1st row of the transform matrix by setting \texttt{Tsquare!G2} to 1 and enter $(1,-1,-1,1)$ as the 1st row at \texttt{Tsquare!B39:E39}. The \shtTsquare sheet should now appear as the lower-right view in Figure \ref{fig:Tsquare sheet: Hypotheses}. The test result accepts the null with an even bigger p-value=0.9714 (\texttt{Tsqaure!N2}). Looking into the data, we do find a number of points where the difference between $N-S$ is greater than that between $E-W$.
-                
-                
-                Note because $(1,-1,-1,1) = (1,0,-1,0) - (0,1,0,-1)$, therefore we cannot test all three hypotheses in one transformation as that would create a singular covariance matrix for the transformed data and then no $T^2$ statistic could be constructed.
-        
-        \end{enumerate}
         
         
         
@@ -306,7 +226,7 @@
         \end{enumerate}
         Note that the original definition of PCA is to be a method seeking the linear directions on which data projects with maximum variance. With this definition, it is not restricted to multivariate normal data but is applicable under any sampling assumption by proper techniques. Nonetheless, if we can assume multivariate normality, the computation becomes much easier.
         
-        \subsection[egCCA]{Correlation Analysis with Excel Tool}
+        \subsection[egCCA]{Canonical Correlation Analysis}
         The overall idea of Canonical Correlation Analysis \citep{hotelling1936relations} is to construct a scalar correlation measure $r$, called the canonical correlation, that describes linear association between two vectors of multivariate random variables $\textbf{v}\in\mathbb{R}^p$ and $\textbf{w}\in\mathbb{R}^q$. We demonstrate canonical correlation analysis following \cite{anderson2003introMVA3e} with the ``Salespeople" dataset registered on the \shtData sheet under the same name. The ``Salespeople" dataset collects 7 covariates per person that can be grouped into two sets. The first 3 variables measure sales performance scores; the rest 4 variables measure general intellectual tendencies of the person.
         
         As before, the raw data should be copied first to the \shtPivot sheet, and then brought to the \shtCanCorr sheet using the green paste-from-pivot double-click button. We will investigate the correlation structure between the 3 performance variables and the 4 skill variables. To indicate grouping, we put a letter \texttt{v} ahead each column of a performance variable and a letter \texttt{w} ahead each column of a skill variable. The \shtCanCorr sheet should now appear as Figure \ref{fig:The CanCorr sheet}. As in the \shtPCA sheet, each time an \texttt{v} or \texttt{w} is typed, the whole sheet is regenerated to show a new set of results. The analysis is also branched into one based on the original data and the other based on the studentized data.
@@ -345,7 +265,7 @@
           \vspace{-10pt}\includegraphics[width=\linewidth, keepaspectratio=true]{img/CanCorrSheetHypothesisTests_markup}
         \end{center}
         
-        \subsection[egFactor]{Factor Analysis with Excel Tool}
+        \subsection[egFactor]{Linear Factor Analysis}
         When all observed variable are used and the residuals are still not spherical, one ponders over the existence of latent factors. The factor model is formulated as
         $$y  - \mu = \Lambda F + \varepsilon$$
         where $F$ is a multivariate normal vector that can be required to satisfy 
@@ -386,6 +306,89 @@
         As before, we copy the  ``Olympic88" raw data table on the \shtData sheet, paste it to the \shtPivot sheet, switch to the \shtFactor sheet and double-click on the top-left green button with text ``Paste from Pivot". The actual computation for Factor analysis is event-triggered in the same fashion as seen before. There are two branches of computations done the original and studentized data. After entering 10 \texttt{x}'s ahead of every results columns, the \shtFactor sheet should now appear as Figure \ref*{fig:FactorSheetOutput_markup}.
         
         The computation for Factor analysis based on studentized data starts with Rectangle 3 where the correlation matrix is placed. Rectangle 4 computes the eigenvalues and eigenvectors for the correlation matrix. Rectangle 5 shows the $m$-column loading matrix estimate according to Eq(\ref{eq:loading matrix}). The number $m$ is specified in the Rectangle m. Rectangle 6 computes the common covariance estimate (\ref{eq:common covariance}). Rectangle 7 computes the specific covariance estimate $\hat{\Psi} = S-\hat{\Lambda}\hat{\Lambda}^\intercal$. The heat-mapped Rectangles 8 compute the latent factors by (\ref{eq:bartlett factor score}) and (\ref{eq:thomson factor score}) for the studentized data. Rectangle 10 repeats the same computation for the original data, which produces the latent factors in Rectangle 9.
+        
+        \subsection[egOneSample]{Multivariate Hypothesis Testing}
+        
+        Many hypotheses about the differences of \emph{correlated} variables can be tested using Hotelling's $T^2$ statistic. The $T^2$ statistic is a multivariate generalization of Student's $t$ statistic. It takes a quadratic form and its sampling distribution is linked to the $F$-distribution \citep{hotelling1931Tsq}:
+        
+        \[n{\left( {\bar{\textbf{x}} - {\boldsymbol{\mu}}} \right)^ \intercal}{\textbf{S}^{ - 1}}\left( {\bar{\textbf{x}} - {\boldsymbol{\mu}}} \right) \sim T^2(p, n-1) = \frac{{p\left( {n - 1} \right)}}{{n - p}}F\left( {p,n - p} \right) \]
+        
+        where $\textbf{x} \in \mathbb{R}^{p\times n}$ is the data vector, 
+        $\bar{\textbf{x}} \in \mathbb{R}^p$ is the sample mean vector, 
+        $\boldsymbol{\mu} \in \mathbb{R}^p$ is the true mean vector,
+        $n$ is the sample size, and 
+        $\textbf{S}$ is the sample covariance matrix
+        \[\textbf{S} = \frac{1}{{n - 1}}\left( {\textbf{x} - \bar{\textbf{x}}{\textbf{1}^\intercal}} \right){\left( {\textbf{x} - \bar{\textbf{x}}{\textbf{1}^\intercal}} \right)^\intercal}.\]
+        
+        
+        If the sample covariance $\textbf{S}$ is replaced by the true covariance
+        $\boldsymbol{\Sigma}$ then the resulting pivotal quantity $n{\left( {\bar{\textbf{x}} - {\boldsymbol{\mu}}} \right)^ \intercal}{\boldsymbol{\Sigma}^{ - 1}}\left( {\bar{\textbf{x}} - {\boldsymbol{\mu}}} \right)$
+        is $\chi^2$-distributed.
+        Since any linear transformation of a normal random vector remains normal, the test statistic remains $T^2$. One then focuses on the design of a linear transform $C$ that represents the hypothesis of interest: 
+        
+        \[H_0: C\bar{\textbf{x}} - \boldsymbol{\xi}_0 = \textbf{0}.\]
+        
+        
+        
+        Since the design of the linear transform is essentially a process of choosing the proper basis for a re-coordinatization of data, the whole process can be intuitively understood as finding the most direct ``angle" to view the data such that the hypothesis is settled by judging whether the distance between a pair of points is too much for them to be considered the same point. We demonstrate the methodology using the classic example of \cite{rao1948corkboring} with our Excel tool.
+        
+        
+        
+        \subsubsection{Example: Bark deposit from 4 directions of the trunk of 28 Oak trees.}
+        
+        \cite{rao1948corkboring} exhibited a dataset containing measurements of the weights of  cork borings taken from 4 directions on the trunk of 28 Oak trees. The hypothesis of interest was that the deposit is uniform in the North--South directions and also uniform but \emph{less} in the East--West directions. The dataset is registered under name "Cork borings" on the \shtData sheet. As before, a copy is pasted to the \shtPivot sheet for any preprocessing and initial exploration. Then a further copy for analysis is pasted to the \shtTsquare sheet by double-clicking the green paste button placed at the top-left cornor of each sheet. The initial setup should appear as Figure \ref{fig:corkboringinitialsetup}. The analysis is carried out in the following steps.
+        \begin{figure}[!tbh]      
+        	\includegraphics[width=\linewidth, keepaspectratio=true]{img/TsquareSheetAfterPaste_markup}
+        	\vspace{-25pt}\centering{}\protect\caption{Tsquare sheet: initial setup.}\label{fig:corkboringinitialsetup}
+        \end{figure}
+        \begin{figure}[!tbh]
+        	\includegraphics[width=0.49\linewidth,keepaspectratio=true]{img/TsquareSheetOutput_markup}
+        	\includegraphics[width=0.49\linewidth,keepaspectratio=true]{img/TsquareSheetOutput2_markup}
+        	\includegraphics[width=0.49\linewidth,keepaspectratio=true]{img/TsquareSheetOutput3_markup}
+        	\includegraphics[width=0.49\linewidth,keepaspectratio=true]{img/TsquareSheetOutput4_markup}
+        	
+        	\vspace{-10pt}\centering\protect\caption{Upper-Left, $H_0: N = S$; Upper-Right, $H_0: E = W$;
+        		Lower-Left, $H_0: N = S \texttt{ and } E=W$;
+        		Lower-Right, $H_0: N-S=E-W$.}\label{fig:Tsquare sheet: Hypotheses}
+        \end{figure}
+        \begin{enumerate}
+        	\item Perform the following three steps exactly: Select cells \texttt{Tsquare!B3:E3} | press \texttt{y} on the keyboard | Windows user: press \texttt{ctrl} + \texttt{Enter} on the keyboard; Mac user: Press \texttt{command} + \texttt{Enter}. By doing these steps, you have entered 4 ``y"s simultaneously.
+        	
+        	\item We start with testing the univariate null hypothesis $H_0: N = S$. The following step computes the p-value $=0.5740$ in cell \texttt{Tsquare!N2} for the test and the null hypothesis is accepted.
+        	
+        	Enter $-1$ in cell \texttt{Tsquare!D39} such that the first row of the matrix of our linear transform becomes $(1,0,-1,0)$. Enter 1 in cell \texttt{Tsquare!G2} to indicate we use only the first row of the transformation matrix. The \shtTsquare sheet should now appear as the upper-left view in Figure \ref{fig:Tsquare sheet: Hypotheses}.
+        	
+        	\item Next we test the another univariate hypothesis $H_0: E = W$ by simply modifying the first row of the transformation matrix near \texttt{Tsquare!B39:E39} into $(0,1,0,-1)$. The \shtTsquare sheet should now appear as the upper-right view in Figure \ref{fig:Tsquare sheet: Hypotheses}. This results in a p-value=0.6310 and therefore the null hypothesis is accepted.
+        	
+        	
+        	\item Next we test the two hypotheses jointly: $H_0: N=S$ and $E=W$. The following step results in an increased p-value=0.8194 and therefore null hypothesis accepted.
+        	
+        	Change \texttt{Tsquare!G2} to 2 and modify the first 2 rows of the transformation matrix near \texttt{Tsquare!B39:E40} into 
+        	\[\left[ {\begin{array}{*{20}{c}}
+        		1&0&-1&0 \\ 
+        		0&1&0&-1
+        		\end{array}} \right]\]
+        	
+        	
+        	The \shtTsquare sheet should now appear as the lower-left view in Figure \ref{fig:Tsquare sheet: Hypotheses}.
+        	
+        	\item To understand why the p-value has increased in the previous step, we plot the covariance matrix of the transformed data. Now perform the following steps: copy \texttt{L14:M15}, the covariance of the transformed data (\texttt{Ty1, Ty2}), switch to the \shtCovCorrel sheet, double-click on the wide green cell \texttt{Cov2Correl!A3}, double-click on the orange cell \texttt{Cov2Correl!Q1}, follow the instruction on the popup to pick the covariance range at \texttt{Cov2Correl!B4:C5} and click done. Figure \ref{fig:Cov2Correl_PlotCov} should appear on the \shtCovCorrel sheet now.
+        	
+        	\begin{figure}[!tbh]
+        		\includegraphics[width=90pt,keepaspectratio=true]{img/Cov2Correl_PlotCov}
+        		\vspace{-10pt}\centering\protect\caption{Cov2Correl sheet: Covariance plot of the transformed responses.}\label{fig:Cov2Correl_PlotCov}
+        	\end{figure}
+        	
+        	
+        	Now we see that the covariance is elongated along the positive sloped direction, making it possible that the mean vector (\texttt{0.857142857, 0.928571429}), displayed at range \texttt{Tsquare!L5:L6}, has a smaller Mahalanobis distance from the center than both its projections on the two standard basis coordinates. This is a version of the Stein paradox (\cite{SteinCM1956InadmissibilityoftheUsualEstima}, \cite{CasellaHwang2012}). In the case here it can be understood as that the two hypotheses mutually corroborate. The data has indicated that it is more natural to have $N=S$ and $E=W$ happening together than separately; it is rather strange to observe uniformity in only one of the directions but not in the other. The corroboration effect would not have been captured had we been testing only univariate procedures.
+        	
+        	
+        	\item To test that the $E-W$ direction is less uniform than the $N-S$ direction, we use the linear combination $(N-S)-(E-W)$ and the null hypothesis that the two directions are equally uniform so that linear combination has zero mean under the null. On the \shtTsquare sheet, we change back to use only the 1st row of the transform matrix by setting \texttt{Tsquare!G2} to 1 and enter $(1,-1,-1,1)$ as the 1st row at \texttt{Tsquare!B39:E39}. The \shtTsquare sheet should now appear as the lower-right view in Figure \ref{fig:Tsquare sheet: Hypotheses}. The test result accepts the null with an even bigger p-value=0.9714 (\texttt{Tsqaure!N2}). Looking into the data, we do find a number of points where the difference between $N-S$ is greater than that between $E-W$.
+        	
+        	
+        	Note because $(1,-1,-1,1) = (1,0,-1,0) - (0,1,0,-1)$, therefore we cannot test all three hypotheses in one transformation as that would create a singular covariance matrix for the transformed data and then no $T^2$ statistic could be constructed.
+        	
+        \end{enumerate}
         
         \section[data]{Storing Data and Generating Random Sample}
         The data import/export of the tool is delegated to Excel's own data i/o utilities. The user can add a blank sheet to import the dataset from various original sources. Next, all datasets need to be transformed into the \textit{data frame} format, i.e., a matrix of data with column header texts. A row in the data frame is a multivariate sample vector jointly observed for all the variables and a column is a univariate sample observed repeatedly for a single variable. The number of rows in the data frame is the sample size.
@@ -461,8 +464,17 @@
         
         
         
-        \section[software]{Discussion}
-        The Excel tool is sheet-oriented. There four types of sheets: Data storage sheet (\shtData), Data simulation sheet (\shtRand), Data pre-process sheet (\shtPivot), and Method sheet (\shtLM, etc). The \shtPivot sheet contains the data in analysis-ready state. The method sheets all implement a paste-from-pivot button at the top-left corner to create its own copy of the analysis-ready data and then builds formula chains to arrive at results. All sheets can use built-in Excel functionalities as well as custom addin functions written in VBA, XLL(COM), or .NET(VSTO). The transparency of the computation together with Excel's own tools around formula building, tracing, and checking allows complex models to be understood quickly.
+        \section[software]{Collaboration}
+        We have ported the entire project to github. Readers with Excel development experience who find the project meaningful and would like to contribute can directly fork the project on github, add a new analysis sheet, write new functions or libraries, and all kinds of features, and not forgetting to request for pulling by the master branch.
+        
+        As can be seen from the examples in the previous section, the current Excel tool has manifested a sheet-oriented, event-triggered design. As it has become, currently, there are four types of sheets:
+        \begin{enumerate}
+        \item Data storage sheet (\shtData), to become the raw data interface of the software.
+        \item Random sample generation sheet (\shtRand), to become the simulation workspace of the software.
+        \item Data preprocessing sheet (\shtPivot), to become the preprocessing workspace of the software.
+        \item Analysis sheet (e.g., \shtLM, etc), to become the main modeling and analysis workspace of the software.
+        \end{enumerate}
+        The \shtPivot sheet contains the data in analysis-ready state. The analysis sheets all implement a paste-from-pivot button at the top-left corner to create its own copy of the analysis-ready data and then builds formula chains to arrive at results. All sheets can use built-in Excel functionalities as well as custom addin functions written in VBA, XLL(COM), or .NET(VSTO). The transparency of the computation together with Excel's own tools around formula building, tracing, and checking allows complex models to be studied, understood, and used without tears.
         
         \bibliographystyle{jss}
         \bibliography{MasterBibliography}
